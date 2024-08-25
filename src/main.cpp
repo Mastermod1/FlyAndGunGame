@@ -34,12 +34,19 @@ void handleInputs(void* movement_action_params)
 };
 
 std::uint8_t ship_bitmap[] = {
-    0b11111100,
-    0b11100000,
-    0b11111111,
-    0b11111111,
-    0b11100000,
-    0b11111100,
+    0b11111111, 0b11100000, 0b11100000, 0b11111110, 0b11111110, 0b11100000, 0b11100000, 0b11111111,
+};
+
+std::uint8_t bullet_bitmap[] = {
+    0b00011000,
+    0b00011000,
+};
+
+struct Bullets
+{
+    int index = 0;
+    int max_size = 20;
+    std::pair<int, int> bulltets[20] = {{0, 0}};
 };
 
 extern "C" void app_main()
@@ -56,13 +63,26 @@ extern "C" void app_main()
 
     std::uint8_t pos = 0;
     std::uint8_t speed = 5;
-    std::uint8_t bitmat_height = 6;
+    std::uint8_t bitmat_height = 8;
+
+    Bullets bullets;
     while (1)
     {
         pos = std::max(0, std::min(63 - bitmat_height, pos + (params.x_axis * speed)));
         params.x_axis = 0;
         ssd1306_clear_screen(&dev, false);
-        ssd1306_bitmaps(&dev, 0, pos, ship_bitmap, 8 * 1, 6, false);
+        ssd1306_bitmaps(&dev, 0, pos, ship_bitmap, 8 * 1, 8, false);
+        bullets.bulltets[bullets.index] = {9, pos + 3};
+        bullets.index = (bullets.index + 1) % bullets.max_size;
+        for (int i = 0; i < bullets.max_size; i++)
+        {
+            if (bullets.bulltets[i] != std::pair<int, int>{0, 0})
+            {
+                ssd1306_bitmaps(&dev, bullets.bulltets[i].first, bullets.bulltets[i].second, bullet_bitmap, 8 * 1, 2,
+                                false);
+                bullets.bulltets[i].first += 5;
+            }
+        }
 
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     };
