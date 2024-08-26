@@ -443,7 +443,7 @@ void ssd1306_bitmaps(SSD1306_t * dev, int xpos, int ypos, uint8_t * bitmap, int 
 				_seg++;
 			}
 		}
-		vTaskDelay(1);
+		// vTaskDelay(1);
 		offset = offset + _width;
 		dstBits++;
 		_seg = xpos;
@@ -461,7 +461,7 @@ void ssd1306_bitmaps(SSD1306_t * dev, int xpos, int ypos, uint8_t * bitmap, int 
 		ssd1306_dump_page(dev, page, _seg);
 	}
 #endif
-	ssd1306_show_buffer(dev);
+	// ssd1306_show_buffer(dev);
 }
 
 
