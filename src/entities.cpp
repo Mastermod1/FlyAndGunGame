@@ -30,7 +30,7 @@ void simulateEnemyMovement(SSD1306_t& dev)
     }
 }
 
-void simulateBulletMovement(SSD1306_t& dev)
+void simulateBulletMovement(SSD1306_t& dev, int& score)
 {
     auto it = G_BULLETS.begin();
     while (it != G_BULLETS.end())
@@ -41,6 +41,7 @@ void simulateBulletMovement(SSD1306_t& dev)
             ssd1306_bitmaps(&dev, it->y, it->x, clear_8x8, 8 * 1, 8, false);
             ssd1306_bitmaps(&dev, it->y, it->x, clear_8x2, 8 * 1, 2, false);
             G_ENEMIES.remove(actualEnemyPosition(*it));
+            score++;
             it = G_BULLETS.erase(it);
             continue;
         }

@@ -8,6 +8,6 @@ extern std::list<Position2D> G_BULLETS;
 extern std::list<Position2D> G_ENEMIES;
 
 void simulateEnemyMovement(SSD1306_t& dev);
-void simulateBulletMovement(SSD1306_t& dev);
+void simulateBulletMovement(SSD1306_t& dev, int& score);
 
 void spawnEnemyEveryNFrames(int N);
