@@ -1,19 +1,18 @@
 #include <cstdint>
 
 #include "bitmaps.hpp"
+#include "digit_bitmaps.hpp"
 #include "entities.hpp"
 #include "movement_action_params.hpp"
+#include "score_printer.hpp"
 #include "ssd1306.h"
 #include "tasks.hpp"
-#include "score_printer.hpp"
-#include "digit_bitmaps.hpp"
 
 extern "C" void app_main()
 {
     SSD1306_t dev;
     i2c_master_init(&dev, CONFIG_SDA_GPIO, CONFIG_SCL_GPIO, CONFIG_RESET_GPIO);
     ssd1306_init(&dev, 128, 64);
-    ssd1306_clear_screen(&dev, false);
     ssd1306_contrast(&dev, 0xff);
     ssd1306_clear_screen(&dev, false);
 
@@ -31,7 +30,7 @@ extern "C" void app_main()
         pos = std::max(0, std::min(63 - bitmat_height, pos + (params.x_axis * speed)));
         params.x_axis = 0;
         ssd1306_clear_screen(&dev, false);
-        ssd1306_bitmaps(&dev, 0, pos, ship_bitmap, 8 * 1, 8, false);
+        ssd1306_bitmaps(&dev, 0, pos, ship_bitmap, ship_bitmap.getWidth(), ship_bitmap.getHeight(), false);
 
         spawnEnemyEveryNFrames(5);
         simulateEnemyMovement(dev);

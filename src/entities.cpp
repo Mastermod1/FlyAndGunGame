@@ -15,16 +15,16 @@ void simulateEnemyMovement(SSD1306_t& dev)
     {
         if (it->y < 12)
         {
-            setArea(*it, 8, 8, false);
-            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x8, 8 * 1, 8, false);
+            setArea(*it, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), false);
+            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x8, clear_8x8.getWidth(), clear_8x8.getHeight(), false);
             it = G_ENEMIES.erase(it);
         }
         else
         {
-            setArea(*it, 8, 8, false);
-            ssd1306_bitmaps(&dev, it->y, it->x, enemy_bitmap, 8 * 1, 8, false);
+            setArea(*it, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), false);
+            ssd1306_bitmaps(&dev, it->y, it->x, enemy_bitmap, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), false);
             it->y -= 5;
-            setArea(*it, 8, 8, true);
+            setArea(*it, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), true);
             it++;
         }
     }
@@ -38,8 +38,8 @@ void simulateBulletMovement(SSD1306_t& dev, int& score)
         if (G_OCCUPANCY[Position2D(it->x, it->y)])
         {
             setArea(*it, 8, 8, false);
-            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x8, 8 * 1, 8, false);
-            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x2, 8 * 1, 2, false);
+            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x8, clear_8x8.getWidth(), clear_8x8.getHeight(), false);
+            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x2, clear_8x2.getWidth(), clear_8x2.getHeight(), false);
             G_ENEMIES.remove(actualEnemyPosition(*it));
             score++;
             it = G_BULLETS.erase(it);
@@ -47,12 +47,13 @@ void simulateBulletMovement(SSD1306_t& dev, int& score)
         }
         if (it->y > 100)
         {
-            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x2, 8 * 1, 2, false);
+            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x2, clear_8x2.getWidth(), clear_8x2.getHeight(), false);
             it = G_BULLETS.erase(it);
         }
         else
         {
-            ssd1306_bitmaps(&dev, it->y, it->x, bullet_bitmap, 8 * 1, 2, false);
+            ssd1306_bitmaps(&dev, it->y, it->x, bullet_bitmap, bullet_bitmap.getWidth(), bullet_bitmap.getHeight(),
+                            false);
             it->y += 5;
             it++;
         }

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cstdint>
+#include "bitmap.hpp"
 
-extern std::uint8_t ship_bitmap[8];
-extern std::uint8_t enemy_bitmap[8];
-extern std::uint8_t bullet_bitmap[2];
-extern std::uint8_t clear_8x2[2];
-extern std::uint8_t clear_8x8[8];
+extern Bitmap ship_bitmap;
+extern Bitmap enemy_bitmap;
+extern Bitmap bullet_bitmap;
+extern Bitmap clear_8x2;
+extern Bitmap clear_8x8;
