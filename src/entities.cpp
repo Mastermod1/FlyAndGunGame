@@ -8,6 +8,9 @@
 std::list<Position2D> G_BULLETS;
 std::list<Position2D> G_ENEMIES;
 
+static int G_ENEMY_SPEED = 1;
+static int G_BULLET_SPEED = 5;
+
 void simulateEnemyMovement(SSD1306_t& dev)
 {
     auto it = G_ENEMIES.begin();
@@ -23,7 +26,7 @@ void simulateEnemyMovement(SSD1306_t& dev)
         {
             setArea(*it, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), false);
             ssd1306_bitmaps(&dev, it->y, it->x, enemy_bitmap, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), false);
-            it->y -= 5;
+            it->y -= G_ENEMY_SPEED;
             setArea(*it, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), true);
             it++;
         }
@@ -54,7 +57,7 @@ void simulateBulletMovement(SSD1306_t& dev, int& score)
         {
             ssd1306_bitmaps(&dev, it->y, it->x, bullet_bitmap, bullet_bitmap.getWidth(), bullet_bitmap.getHeight(),
                             false);
-            it->y += 5;
+            it->y += G_BULLET_SPEED;
             it++;
         }
     }
