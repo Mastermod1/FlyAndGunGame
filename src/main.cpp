@@ -27,21 +27,21 @@ extern "C" void app_main()
     ScorePrinter score_display(dev, G_ALL_DIGITS);
     while (1)
     {
+        ssd1306_bitmaps(&dev, 0, pos, clear_8x8, clear_8x8.getWidth(), clear_8x8.getHeight(), false);
         pos = std::max(0, std::min(63 - bitmat_height, pos + (params.x_axis * speed)));
         params.x_axis = 0;
-        ssd1306_clear_screen(&dev, false);
         ssd1306_bitmaps(&dev, 0, pos, ship_bitmap, ship_bitmap.getWidth(), ship_bitmap.getHeight(), false);
 
-        spawnEnemyEveryNFrames(5);
+        spawnEnemyEveryNFrames(10);
         simulateEnemyMovement(dev);
 
-        G_BULLETS.emplace_front(pos + 3, 9);
+        G_BULLETS.emplace_back(pos + 3, 9);
         simulateBulletMovement(dev, score);
 
         score_display.display(score);
 
         ssd1306_show_buffer(&dev);
 
-        vTaskDelay(500 / portTICK_PERIOD_MS);
+        vTaskDelay(33 / portTICK_PERIOD_MS);
     };
 }

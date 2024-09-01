@@ -9,8 +9,8 @@ Bitmap enemy_bitmap = {
 };
 
 Bitmap bullet_bitmap = {
-    {0b00011000},
-    {0b00011000},
+    {0b11000000},
+    {0b11000000},
 };
 
 Bitmap clear_8x2 = {8, 2, 0};

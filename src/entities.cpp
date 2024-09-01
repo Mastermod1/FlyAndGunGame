@@ -9,7 +9,7 @@ std::list<Position2D> G_BULLETS;
 std::list<Position2D> G_ENEMIES;
 
 static int G_ENEMY_SPEED = 1;
-static int G_BULLET_SPEED = 5;
+static int G_BULLET_SPEED = 8;
 
 void simulateEnemyMovement(SSD1306_t& dev)
 {
@@ -25,8 +25,9 @@ void simulateEnemyMovement(SSD1306_t& dev)
         else
         {
             setArea(*it, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), false);
-            ssd1306_bitmaps(&dev, it->y, it->x, enemy_bitmap, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), false);
+            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x8, clear_8x8.getWidth(), clear_8x8.getHeight(), false);
             it->y -= G_ENEMY_SPEED;
+            ssd1306_bitmaps(&dev, it->y, it->x, enemy_bitmap, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), false);
             setArea(*it, enemy_bitmap.getWidth(), enemy_bitmap.getHeight(), true);
             it++;
         }
@@ -41,9 +42,9 @@ void simulateBulletMovement(SSD1306_t& dev, int& score)
         if (G_OCCUPANCY[Position2D(it->x, it->y)])
         {
             setArea(*it, 8, 8, false);
-            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x8, clear_8x8.getWidth(), clear_8x8.getHeight(), false);
-            ssd1306_bitmaps(&dev, it->y, it->x, clear_8x2, clear_8x2.getWidth(), clear_8x2.getHeight(), false);
-            G_ENEMIES.remove(actualEnemyPosition(*it));
+            const auto& actual_position = actualEnemyPosition(*it);
+            ssd1306_bitmaps(&dev, actual_position.y, actual_position.x, clear_8x8, clear_8x8.getWidth(), clear_8x8.getHeight(), false);
+            G_ENEMIES.remove(actual_position);
             score++;
             it = G_BULLETS.erase(it);
             continue;
@@ -55,9 +56,15 @@ void simulateBulletMovement(SSD1306_t& dev, int& score)
         }
         else
         {
-            ssd1306_bitmaps(&dev, it->y, it->x, bullet_bitmap, bullet_bitmap.getWidth(), bullet_bitmap.getHeight(),
-                            false);
+            _ssd1306_pixel(&dev, it->y, it->x, true);
+            _ssd1306_pixel(&dev, it->y+1, it->x, true);
+            _ssd1306_pixel(&dev, it->y, it->x+1, true);
+            _ssd1306_pixel(&dev, it->y+1, it->x+1, true);
             it->y += G_BULLET_SPEED;
+            _ssd1306_pixel(&dev, it->y, it->x, false);
+            _ssd1306_pixel(&dev, it->y+1, it->x, false);
+            _ssd1306_pixel(&dev, it->y, it->x+1, false);
+            _ssd1306_pixel(&dev, it->y+1, it->x+1, false);
             it++;
         }
     }
